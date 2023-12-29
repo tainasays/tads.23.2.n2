@@ -2,21 +2,27 @@ import plotly.express as px
 from data.download import download_data
 
 def plot_line_i(ticker:str):
-    """ Plot an interactive plot using plotly.
+    """_summary_
 
     Args:
-        ticker (str): The ticker of financial asset.
+        ticker (str): ticker financial asset.
 
     Returns:
-        plotly: A ticker plot.
+        _type_: graphic interactive.
     """
 
+    
+
     data = download_data(ticker)
+    data['SMA'] = data['Close'].rolling(window = 9).mean();
+    data['LMA'] = data['Close'].rolling(window = 72).mean();
 
     fig = px.line(
         data.reset_index(),
-        x = 'Date', y = 'Close', title = ticker,
-        labels = {'Close': 'Fechamento', 'Date': 'Data'}
+        x = 'Date', 
+        y = ['Close', 'SMA', 'LMA'],
+        title = ticker,
+        labels = {'Close': 'black', 'SMA': 'blue', 'LMA': 'red'}
     )
 
     return fig
